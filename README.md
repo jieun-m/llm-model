@@ -31,7 +31,7 @@
 [요구 기술 키워드 추출] → Azure OpenAI Embedding / GPT
        ↓
 [LLM 분석 (GPT-4)] → RAG 기반 비교 분석
-       ├─ 이력서 vs 기업 스택 비교
+       ├─ 이력서 vs 기업 요구 스택 비교
        ├─ 강점/약점 추출
        ├─ 예상 면접 질문 생성
        ↓
@@ -58,13 +58,23 @@
 
 | Scope          | Stack                                                                          |
 |---------------|-------------------------------------------------------------------------------|
-| 클라우드       | Microsoft Azure                                                              |
-| AI/LLM        | Azure OpenAI (GPT-4, Embedding)                                              |
-| 서버리스       | Azure Function, Azure Logic App                                              |
-| 데이터 저장     | Azure Blob Storage, Azure SQL Database                                       |
-| 벡터 검색      | Azure Cognitive Search (or Qdrant, Pinecone 등 대안 벡터 DB 사용 가능)         |
-| 백엔드 분석     | LangChain, LlamaIndex, Python                                                |
-| 프론트엔드     | Power BI or React 기반 Web App                                               |
+| 클라우드 인프라     | Microsoft Azure                                                              |
+| AI/LLM            | Azure OpenAI (GPT-4, Embedding)                                              |
+| 문서 처리 / 인식 AI | Azure AI Document Intelligence (이력서 PDF → 텍스트 추출) |
+| 자동화 및 처리 로직 | Azure Function, Azure Logic App                                               |
+| 데이터 저장소       | Azure Blob Storage, Azure SQL Database                                       |
+| 벡터 검색          | Azure AI Search                                                              |
+| 웹 UI             | Streamlit, Python                                                           |
+
+
+## 활용 예시
+ 이력서를 업로드하면, 쿠팡 데이터 엔지니어 포지션에 적합한지 분석해드리고, 예상 면접 질문을 자동 생성해드립니다.
+
+ ## 향후 계획
+
+- [ ] 이력서 추천 순위화 기능 추가 (Top-N 후보 추천)
+- [ ] 다양한 직무 유형별 평가 기준 자동화
+
 
 
 
