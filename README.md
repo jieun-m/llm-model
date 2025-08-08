@@ -23,13 +23,13 @@
 | 분류 | 기술 |
 |------|------|
 | Backend | Python, Langchain |
-| Frontend | Streamlit |
+| Frontend | Streamlit, Pandas |
 | AI 모델 | Azure OpenAI (GPT-4.1, text-embedding-3-large) |
 | 문서 분석 | Azure AI Document Intelligence (Custom Extraction Model) |
 | 벡터 저장소 | Azure AI Search (Vector DB) |
 | 문서 저장 | Azure Blob Storage |
 | 배포 | Azure Web App |
-| 기타 | Pandas, PyPDF2, dotenv 등 |
+| 기타 | PyPDF2, dotenv 등 |
 
 ---
 
