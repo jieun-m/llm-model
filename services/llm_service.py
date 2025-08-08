@@ -430,16 +430,36 @@ def evaluate_candidate_fit(job_posting_text, resume_fields):
 점수에 대한 이유와 설명도 같이 출력해주세요.
 """
         
-        response = openai.chat.completions.create(
-            model="dev-gpt-4.1",
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=2000
-        )
-        
-        return True, response.choices[0].message.content.strip()
+        # LangChain AzureChatOpenAI 사용 (챗봇과 동일한 방식)
+        try:
+            from langchain_openai import AzureChatOpenAI
+            
+            llm = AzureChatOpenAI(
+                openai_api_version=OPENAI_API_VERSION,
+                azure_deployment="gpt-4.1",
+                azure_endpoint=AZURE_ENDPOINT,
+                api_key=OPENAI_API_KEY,
+                temperature=0.7
+            )
+            
+            # LangChain을 사용한 응답 생성
+            response = llm.invoke(prompt)
+            
+            return True, response.content.strip()
+        except Exception as langchain_error:
+            # LangChain 실패 시 기존 방식으로 폴백
+            setup_openai_client()
+            
+            response = openai.chat.completions.create(
+                model="gpt-4.1",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=2000
+            )
+            
+            return True, response.choices[0].message.content.strip()
     except Exception as e:
         return False, str(e)
 
@@ -471,7 +491,7 @@ def get_llm():
     
     try:
         llm = AzureChatOpenAI(
-            azure_deployment="dev-gpt-4.1",
+            azure_deployment="gpt-4.1",
             openai_api_version=OPENAI_API_VERSION,
             azure_endpoint=AZURE_ENDPOINT,
             api_key=OPENAI_API_KEY,
@@ -490,7 +510,7 @@ def get_embedding_model():
     
     try:
         embeddings = AzureOpenAIEmbeddings(
-            azure_deployment="text-embedding-ada-002",
+            azure_deployment="text-embedding-3-large",
             openai_api_version=OPENAI_API_VERSION,
             azure_endpoint=AZURE_ENDPOINT,
             api_key=OPENAI_API_KEY

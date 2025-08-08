@@ -24,6 +24,55 @@ def main():
     """, unsafe_allow_html=True)
     
     st.title("📄 이력서 분석 시스템")
+    
+    # API 키 디버그 정보 표시
+    import os
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    # 환경 변수 상태 확인
+    env_vars = {
+        "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY"),
+        "AZURE_ENDPOINT": os.getenv("AZURE_ENDPOINT"),
+        "OPENAI_API_VERSION": os.getenv("OPENAI_API_VERSION"),
+        "OPENAI_API_TYPE": os.getenv("OPENAI_API_TYPE"),
+        "AZURE_STORAGE_CONNECTION_STRING": os.getenv("AZURE_STORAGE_CONNECTION_STRING"),
+        "DOCUMENT_INTELLIGENCE_ENDPOINT": os.getenv("DOCUMENT_INTELLIGENCE_ENDPOINT"),
+        "DOCUMENT_INTELLIGENCE_KEY": os.getenv("DOCUMENT_INTELLIGENCE_KEY")
+    }
+    
+    # 디버그 정보 표시 (개발용)
+    with st.expander("🔍 API 키 디버그 정보", expanded=False):
+        st.write("**환경 변수 상태:**")
+        for key, value in env_vars.items():
+            if value:
+                # API 키는 보안을 위해 일부만 표시
+                if "KEY" in key or "CONNECTION_STRING" in key:
+                    masked_value = value[:10] + "..." + value[-10:] if len(value) > 20 else "***"
+                    st.write(f"- {key}: {masked_value}")
+                else:
+                    st.write(f"- {key}: {value}")
+            else:
+                st.write(f"- {key}: ❌ 설정되지 않음")
+        
+        # 누락된 필수 API 키 확인
+        missing_apis = []
+        if not env_vars["OPENAI_API_KEY"]:
+            missing_apis.append("Azure OpenAI API 키")
+        if not env_vars["AZURE_ENDPOINT"]:
+            missing_apis.append("Azure OpenAI 엔드포인트")
+        if not env_vars["AZURE_STORAGE_CONNECTION_STRING"]:
+            missing_apis.append("Azure Storage 연결 문자열")
+        if not env_vars["DOCUMENT_INTELLIGENCE_ENDPOINT"]:
+            missing_apis.append("Document Intelligence 엔드포인트")
+        if not env_vars["DOCUMENT_INTELLIGENCE_KEY"]:
+            missing_apis.append("Document Intelligence 키")
+        
+        if missing_apis:
+            st.error(f"❌ 다음 API 키가 설정되지 않았습니다: {', '.join(missing_apis)}")
+        else:
+            st.success("✅ 모든 필수 API 키가 설정되었습니다.")
+    
     st.markdown("---")
     
     # 컨테이너 클라이언트 가져오기
@@ -172,10 +221,31 @@ def main():
                                         resume_fields[field_name] = fields_data[field_name]['content']
                             
                             if resume_fields:
+                                # API 키 상태 확인
+                                import os
+                                from dotenv import load_dotenv
+                                load_dotenv()
+                                
+                                openai_key = os.getenv("OPENAI_API_KEY")
+                                azure_endpoint = os.getenv("AZURE_ENDPOINT")
+                                
+                                # API 키 디버그 정보 추가
+                                debug_info = f"""
+🔍 디버그 정보:
+- OpenAI API 키: {'설정됨' if openai_key else '설정되지 않음'}
+- Azure 엔드포인트: {'설정됨' if azure_endpoint else '설정되지 않음'}
+- 이력서 필드 수: {len(resume_fields)}
+- 채용공고 길이: {len(job_text) if job_text else 0}자
+"""
+                                
                                 success, evaluation_result = evaluate_candidate_fit(job_text, resume_fields)
                                 if success:
                                     fitness_evaluation = evaluation_result
                                     fitness_score = extract_score_from_evaluation(evaluation_result)
+                                else:
+                                    # 실패 시 디버그 정보 포함
+                                    fitness_evaluation = f"❌ 평가 실패\n{debug_info}\n\n오류: {evaluation_result}"
+                                    fitness_score = None
                     
                     all_results.append({
                         "file_name": blob.name,
