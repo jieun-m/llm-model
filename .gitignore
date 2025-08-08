@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Azure
+.azure/
+
+# 기존 테스트 파일들 (구조화된 프로젝트로 대체)
+check2*.py
+check3*.py
+storagefilecheck.py
+README.md
+
+# 배포 관련 파일들
+web.config
+.deployment
+streamlit.sh
+AZURE_DEPLOYMENT_GUIDE.md
+
+# 로그 파일들
+*.log
+
+# 임시 파일들
+*.tmp
+*.temp
