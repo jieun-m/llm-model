@@ -22,7 +22,7 @@
 
 | 분류 | 기술 |
 |------|------|
-| Backend | Python, Azure Functions, Langchain |
+| Backend | Python, Langchain |
 | Frontend | Streamlit |
 | AI 모델 | Azure OpenAI (GPT-4.1, text-embedding-3-large) |
 | 문서 분석 | Azure AI Document Intelligence (Custom Extraction Model) |
